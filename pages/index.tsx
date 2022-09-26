@@ -3,13 +3,19 @@ import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import { useQuery, useMutation } from '../convex/_generated/react'
-import { useCallback } from 'react'
+import { useCallback, useState, FormEvent } from 'react'
 
 const Home: NextPage = () => {
-  const counter = useQuery('getCounter', 'clicks') ?? 0
-  const increment = useMutation('incrementCounter')
-  const incrementByOne = useCallback(() => increment('clicks', 1), [increment])
-
+  const [newQuoteText, setNewQuoteText] = useState("");
+  const quotes = useQuery('getQuotes') ?? []
+  const incrementVotes = useMutation('incrementVotes')
+  const addQuote = useMutation('addQuote')
+  //const incrementByOne = useCallback(() => increment('clicks', 1), [increment])
+  async function handleAddQuote(event: FormEvent) {
+    event.preventDefault();
+    setNewQuoteText("");
+    await addQuote(newQuoteText);
+  }
   return (
     <div className={styles.container}>
       <Head>
@@ -20,16 +26,36 @@ const Home: NextPage = () => {
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js</a> with{' '}
-          <a href="https://convex.dev">Convex</a>
+          Quote Voter
         </h1>
+        {quotes.map(({text, votes, id}) =>
+          <div>
+            <p className={styles.description}>
+              {text}
+            </p>
+            {votes}
+            <button className={styles.button} onClick={() => incrementVotes(id, 1)}> +1 </button>
+          </div>
 
-        <p className={styles.description}>
-          {"Here's the counter:"} {counter}
-        </p>
-        <button className={styles.button} onClick={incrementByOne}>
-          Add One!
-        </button>
+        )}
+        <form
+            onSubmit={handleAddQuote}
+
+        >
+            <input
+                value={newQuoteText}
+                onChange={event => setNewQuoteText(event.target.value)}
+                className="form-control w-50"
+                placeholder="New quote..."
+            />
+            <input
+                type="submit"
+                value="Add a quote!"
+                className={styles.button}
+                disabled={!newQuoteText}
+            />
+        </form>
+
       </main>
 
       <footer className={styles.footer}>
