@@ -12,6 +12,7 @@
 import type addQuote from "../addQuote";
 import type getQuotes from "../getQuotes";
 import type incrementVotes from "../incrementVotes";
+import type storeUser from "../storeUser";
 import type { OptimisticLocalStore as GenericOptimisticLocalStore } from "convex/browser";
 import type { ClientMutation, ClientQuery } from "convex/server";
 
@@ -31,6 +32,7 @@ export type ConvexAPI = {
   mutations: {
     addQuote: ClientMutation<typeof addQuote>;
     incrementVotes: ClientMutation<typeof incrementVotes>;
+    storeUser: ClientMutation<typeof storeUser>;
   };
 };
 

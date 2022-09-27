@@ -2,7 +2,7 @@ import { mutation } from './_generated/server'
 import {Id} from "./_generated/dataModel";
 
 export default mutation(
-  async ({ db }, quoteId: Id, increment: number) => {
+  async ({ db }, quoteId: Id<'quotes'>, increment: number) => {
     const quoteDoc = await db.get(quoteId);
     if (quoteDoc === null) {
       console.log('How did you vote for a quote that did not exist?.')

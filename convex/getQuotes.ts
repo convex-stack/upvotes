@@ -1,7 +1,7 @@
 import { query } from './_generated/server'
-import {Id} from "./_generated/dataModel";
+import {Document} from "./_generated/dataModel";
 
-export default query(async ({ db }): Promise<{id: Id, text: string, votes: number}[]> => {
+export default query(async ({ db }): Promise<Document<'quotes'>[]> => {
   const quotesDocs = await db
     .table('quotes')
     .collect()
@@ -9,9 +9,5 @@ export default query(async ({ db }): Promise<{id: Id, text: string, votes: numbe
     return []
   }
   console.log(`Got ${quotesDocs.length} quotes`);
-  return quotesDocs.map((quoteDoc) => {return {
-    id: quoteDoc._id,
-    text: quoteDoc.text,
-    votes: quoteDoc.votes,
-  }}).sort((a, b) => b.votes - a.votes);
+  return quotesDocs.sort((a, b) => b.votes - a.votes);
 })

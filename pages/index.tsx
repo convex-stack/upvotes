@@ -3,19 +3,39 @@ import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import { useQuery, useMutation } from '../convex/_generated/react'
-import { useCallback, useState, FormEvent } from 'react'
+import { Id } from "../convex/_generated/dataModel";
+
+import { useEffect, useState, FormEvent } from 'react'
+import { useAuth0 } from '@auth0/auth0-react';
+
 
 const Home: NextPage = () => {
+
+  const [userId, setUserId] = useState<Id<"users"> | null>(null);
+  const storeUser = useMutation("storeUser");
+  useEffect(() => {
+    // Store the user in the database.
+    // Recall that `storeUser` gets the user information via the `auth`
+    // object on the server. You don't need to pass anything manually here.
+    async function createUser() {
+      const id = await storeUser();
+      setUserId(id);
+    }
+    createUser();
+    return () => setUserId(null);
+  }, [storeUser]);
+
   const [newQuoteText, setNewQuoteText] = useState("");
   const quotes = useQuery('getQuotes') ?? []
   const incrementVotes = useMutation('incrementVotes')
+
   const addQuote = useMutation('addQuote')
-  //const incrementByOne = useCallback(() => increment('clicks', 1), [increment])
   async function handleAddQuote(event: FormEvent) {
     event.preventDefault();
     setNewQuoteText("");
     await addQuote(newQuoteText);
   }
+
   return (
     <div className={styles.container}>
       <Head>
@@ -28,12 +48,12 @@ const Home: NextPage = () => {
         <h1 className={styles.title}>
           Quote Voter
         </h1>
-        {quotes.map(({text, votes, id}) =>
+        {quotes.map(({text, votes, _id}) =>
           <div className={styles.quote}>
             {text}
             <div>
               {votes}
-              <button className={styles.button} style={{width: "auto"}} onClick={() => incrementVotes(id, 1)}> +1 </button>
+              <button className={styles.button} style={{width: "auto"}} onClick={() => incrementVotes(_id, 1)}> +1 </button>
             </div>
           </div>
 
@@ -69,9 +89,49 @@ const Home: NextPage = () => {
             <Image src="/convex.svg" alt="Convex Logo" width={90} height={18} />
           </span>
         </a>
+        <div className="text-center">
+          <span>
+            <Logout />
+          </span>
+        </div>
       </footer>
     </div>
   )
+}
+
+export function Login() {
+  const { isLoading, loginWithRedirect } = useAuth0();
+  if (isLoading) {
+    return <button className="btn btn-primary">Loading...</button>;
+  }
+  return (
+    <main className="py-4">
+      <h1 className="text-center">Convex Chat</h1>
+      <div className="text-center">
+        <span>
+          <button className="btn btn-primary" onClick={loginWithRedirect}>
+            Log in
+          </button>
+        </span>
+      </div>
+    </main>
+  );
+}
+
+function Logout() {
+  const { logout, user } = useAuth0();
+  return (
+    <div>
+      {/* We know this component only renders if the user is logged in. */}
+      <p>Logged in{user!.name ? ` as ${user!.name}` : ""}</p>
+      <button
+        className="btn btn-primary"
+        onClick={() => logout({ returnTo: window.location.origin })}
+      >
+        Log out
+      </button>
+    </div>
+  );
 }
 
 export default Home

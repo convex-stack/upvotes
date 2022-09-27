@@ -3,5 +3,10 @@
   "team": "k8reindeer",
   "prodUrl": "https://calm-herring-24.convex.cloud",
   "functions": "convex/",
-  "authInfo": []
+  "authInfo": [
+    {
+      "domain": "https://dev-65snni10.us.auth0.com",
+      "applicationID": "R9wkycRIRme7qZlw82fJXw1ZMvhNv6Yg"
+    }
+  ]
 }
