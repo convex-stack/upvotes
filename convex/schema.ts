@@ -5,6 +5,10 @@ export default defineSchema({
     text: s.string(),
     votes: s.number(),
   }),
+  goats: defineTable({
+    text: s.string(),
+    voters: s.array(s.id('users'))
+  }),
   users: defineTable({
     name: s.string(),
     tokenIdentifier: s.string(),

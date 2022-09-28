@@ -9,7 +9,7 @@ export default mutation(
     } else {
       quoteDoc.votes += increment
       db.replace(quoteDoc._id, quoteDoc)
-      console.log(`Value of counter is now ${quoteDoc.votes}.`)
+      console.log(`This quote now has ${quoteDoc.votes} votes.`)
     }
   }
 )

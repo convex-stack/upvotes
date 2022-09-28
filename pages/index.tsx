@@ -9,6 +9,8 @@ import { useEffect, useState, FormEvent } from 'react'
 import { useAuth0 } from '@auth0/auth0-react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
+import QuoteVoter from "../components/quoteVoter";
+import GoatVoter from "../components/goatVoter";
 
 const Home: NextPage = () => {
 
@@ -47,7 +49,7 @@ const Home: NextPage = () => {
             <QuoteVoter/>
           </TabPanel>
           <TabPanel>
-            Goat Voter!
+            <GoatVoter/>
           </TabPanel>
         </Tabs>
       </main>
@@ -71,52 +73,6 @@ const Home: NextPage = () => {
       </footer>
     </div>
   )
-}
-
-const QuoteVoter = () => {
-  const [newQuoteText, setNewQuoteText] = useState("");
-  const quotes = useQuery('getQuotes') ?? []
-  const incrementVotes = useMutation('incrementVotes')
-
-  const addQuote = useMutation('addQuote')
-  async function handleAddQuote(event: FormEvent) {
-    event.preventDefault();
-    setNewQuoteText("");
-    await addQuote(newQuoteText);
-  }
-
-  return (<div className={styles.voting_tab}>
-    <h1 className={styles.title}>
-      Quote Voter
-    </h1>
-    {quotes.map(({text, votes, _id}) =>
-      <div className={styles.quote}>
-        {text}
-        <div>
-          {votes}
-          <button className={styles.button} style={{width: "auto"}} onClick={() => incrementVotes(_id, 1)}> +1 </button>
-        </div>
-      </div>
-
-    )}
-    <form
-      onSubmit={handleAddQuote}
-
-    >
-      <input
-        value={newQuoteText}
-        onChange={event => setNewQuoteText(event.target.value)}
-        className="form-control w-50"
-        placeholder="New quote..."
-      />
-      <input
-        type="submit"
-        value="Add a quote!"
-        className={styles.button}
-        disabled={!newQuoteText}
-      />
-    </form>
-  </div>)
 }
 
 export function Login() {
