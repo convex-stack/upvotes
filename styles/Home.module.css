@@ -6,6 +6,11 @@
 }
 
 .main {
+  padding: 2rem 0;
+
+}
+
+.selected_tab_panel {
   padding: 4rem 0;
   flex: 10;
   display: flex;
@@ -13,6 +18,7 @@
   justify-content: center;
   align-items: center;
 }
+
 
 .button {
   font-size: 1rem;
