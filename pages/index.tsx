@@ -38,7 +38,7 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <Tabs selectedTabPanelClassName={styles.selected_tab_panel}>
+        <Tabs>
           <TabList>
             <Tab>Quotes</Tab>
             <Tab>Goats</Tab>
@@ -85,7 +85,7 @@ const QuoteVoter = () => {
     await addQuote(newQuoteText);
   }
 
-  return (<>
+  return (<div className={styles.voting_tab}>
     <h1 className={styles.title}>
       Quote Voter
     </h1>
@@ -116,7 +116,7 @@ const QuoteVoter = () => {
         disabled={!newQuoteText}
       />
     </form>
-  </>)
+  </div>)
 }
 
 export function Login() {
