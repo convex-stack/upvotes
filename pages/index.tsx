@@ -11,6 +11,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import QuoteVoter from "../components/quoteVoter";
 import GoatVoter from "../components/goatVoter";
+import NoteVoter from '../components/noteVoter'
 
 const Home: NextPage = () => {
 
@@ -44,12 +45,16 @@ const Home: NextPage = () => {
           <TabList>
             <Tab>Quotes</Tab>
             <Tab>Goats</Tab>
+            <Tab>Notes</Tab>
           </TabList>
           <TabPanel>
             <QuoteVoter/>
           </TabPanel>
           <TabPanel>
             {userId && <GoatVoter userId={userId}/>}
+          </TabPanel>
+          <TabPanel>
+            <NoteVoter/>
           </TabPanel>
         </Tabs>
       </main>

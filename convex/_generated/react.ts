@@ -10,11 +10,14 @@
  */
 
 import type addGoat from "../addGoat";
+import type addNote from "../addNote";
 import type addQuote from "../addQuote";
 import type getGoats from "../getGoats";
+import type getNotes from "../getNotes";
 import type getQuotes from "../getQuotes";
 import type storeUser from "../storeUser";
 import type voteForGoat from "../voteForGoat";
+import type voteForNote from "../voteForNote";
 import type voteForQuote from "../voteForQuote";
 import type { OptimisticLocalStore as GenericOptimisticLocalStore } from "convex/browser";
 import type { ClientMutation, ClientQuery } from "convex/server";
@@ -31,13 +34,16 @@ import type { ClientMutation, ClientQuery } from "convex/server";
 export type ConvexAPI = {
   queries: {
     getGoats: ClientQuery<typeof getGoats>;
+    getNotes: ClientQuery<typeof getNotes>;
     getQuotes: ClientQuery<typeof getQuotes>;
   };
   mutations: {
     addGoat: ClientMutation<typeof addGoat>;
+    addNote: ClientMutation<typeof addNote>;
     addQuote: ClientMutation<typeof addQuote>;
     storeUser: ClientMutation<typeof storeUser>;
     voteForGoat: ClientMutation<typeof voteForGoat>;
+    voteForNote: ClientMutation<typeof voteForNote>;
     voteForQuote: ClientMutation<typeof voteForQuote>;
   };
 };

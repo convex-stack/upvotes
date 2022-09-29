@@ -23,7 +23,7 @@ const TopicVoter = ({name, topics, addTopicMutation, handleVote}: TopicVoterProp
       {name} Voter
     </h1>
     {topics.map(({text, votes, disableVoting, _id}) =>
-      <div className={styles.quote}>
+      <div className={styles.quote} key={_id.id}>
         {text}
         <div>
           {votes}
