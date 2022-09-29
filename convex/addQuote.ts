@@ -1,20 +1,24 @@
-import { mutation } from './_generated/server'
+import {DatabaseWriter, mutation} from './_generated/server'
+import {DataModel, TableNames} from "./_generated/dataModel";
 
 export default mutation(
   async ({ db }, quoteText: string) => {
-    const quoteDoc = await db
-      .table('quotes')
-      .filter((q) => q.eq(q.field('text'), quoteText))
-      .first()
-    if (quoteDoc === null) {
-      db.insert('quotes', {
-        text: quoteText,
-        votes: 0,
-      })
-      // console.log messages appear in your browser's console and the Convex dashboard.
-      console.log('Created new Quote.')
-    } else {
-      console.log(`Quote with text ${quoteText} already exists`)
-    }
+    await addTopic(db, 'quotes', quoteText, {votes: 0})
   }
 )
+
+export async function addTopic(db: DatabaseWriter, tableName: TableNames, topicText: string, defaultFields: any) {
+  const quoteDoc = await db
+    .table(tableName)
+    .filter((q) => q.eq(q.field('text'), topicText))
+    .first()
+  if (quoteDoc === null) {
+    db.insert(tableName, {
+      text: topicText,
+      ...defaultFields
+    })
+    console.log(`Created 1 new ${tableName}.`)
+  } else {
+    console.log(`${tableName} with text ${topicText} already exists`)
+  }
+}
