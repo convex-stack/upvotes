@@ -4,7 +4,7 @@ import styles from "../styles/Home.module.css";
 
 type TopicVoterProps = {
   name: string;
-  topics: {text: string, votes: number, _id: Id<any> }[];
+  topics: {text: string, votes: number, disableVoting: boolean, _id: Id<any> }[];
   addTopicMutation: (topicText: string) => void;
   handleVote: (_id: Id<any>) => void;
 }
@@ -22,12 +22,12 @@ const TopicVoter = ({name, topics, addTopicMutation, handleVote}: TopicVoterProp
     <h1 className={styles.title}>
       {name} Voter
     </h1>
-    {topics.map(({text, votes, _id}) =>
+    {topics.map(({text, votes, disableVoting, _id}) =>
       <div className={styles.quote}>
         {text}
         <div>
           {votes}
-          <button className={styles.button} style={{width: "auto"}} onClick={() => handleVote(_id)}> +1 </button>
+          <button className={styles.button} disabled={disableVoting} style={{width: "auto"}} onClick={() => handleVote(_id)}> +1 </button>
         </div>
       </div>
 

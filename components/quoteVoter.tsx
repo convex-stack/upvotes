@@ -3,11 +3,14 @@ import TopicVoter from "./topicVoter";
 
 const QuoteVoter = () => {
   const incrementVotes = useMutation('voteForQuote')
-  const topics = useQuery("getQuotes") ?? []
+  const quotes = useQuery("getQuotes") ?? []
 
   return <TopicVoter
     name={'quote'}
-    topics={topics}
+    topics={quotes.map((q) => ({
+      disableVoting: false,
+      ...q
+    }))}
     addTopicMutation={useMutation('addQuote')}
     handleVote={(_id) => incrementVotes(_id, 1)}/>
 }

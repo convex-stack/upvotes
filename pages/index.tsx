@@ -49,7 +49,7 @@ const Home: NextPage = () => {
             <QuoteVoter/>
           </TabPanel>
           <TabPanel>
-            <GoatVoter/>
+            {userId && <GoatVoter userId={userId}/>}
           </TabPanel>
         </Tabs>
       </main>
