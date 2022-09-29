@@ -9,5 +9,5 @@ export default query(async ({ db }): Promise<Document<'goats'>[]> => {
     return []
   }
   console.log(`Got ${goatsDocs.length} goats`);
-  return goatsDocs;
+  return goatsDocs.sort((a, b) => b.voters.length - a.voters.length);
 })
