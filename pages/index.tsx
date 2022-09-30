@@ -12,6 +12,7 @@ import 'react-tabs/style/react-tabs.css';
 import QuoteVoter from "../components/quoteVoter";
 import GoatVoter from "../components/goatVoter";
 import NoteVoter from '../components/noteVoter'
+import BoatVoter from '../components/boatVoter'
 
 const Home: NextPage = () => {
 
@@ -46,6 +47,7 @@ const Home: NextPage = () => {
             <Tab>Quotes</Tab>
             <Tab>Goats</Tab>
             <Tab>Notes</Tab>
+            <Tab>Boats</Tab>
           </TabList>
           <TabPanel>
             <QuoteVoter/>
@@ -55,6 +57,9 @@ const Home: NextPage = () => {
           </TabPanel>
           <TabPanel>
             <NoteVoter/>
+          </TabPanel>
+          <TabPanel>
+            <BoatVoter/>
           </TabPanel>
         </Tabs>
       </main>

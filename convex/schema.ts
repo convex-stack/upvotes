@@ -16,5 +16,12 @@ export default defineSchema({
   }),
   notes: defineTable({
     text: s.string(),
+  }),
+  boats: defineTable({
+    text: s.string(),
+  }),
+  boatVotes: defineTable({
+    boat: s.id('boats'),
+    user: s.id('users')
   })
 });

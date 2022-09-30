@@ -9,13 +9,16 @@
  * @module
  */
 
+import type addBoat from "../addBoat";
 import type addGoat from "../addGoat";
 import type addNote from "../addNote";
 import type addQuote from "../addQuote";
+import type getBoats from "../getBoats";
 import type getGoats from "../getGoats";
 import type getNotes from "../getNotes";
 import type getQuotes from "../getQuotes";
 import type storeUser from "../storeUser";
+import type voteForBoat from "../voteForBoat";
 import type voteForGoat from "../voteForGoat";
 import type voteForNote from "../voteForNote";
 import type voteForQuote from "../voteForQuote";
@@ -33,15 +36,18 @@ import type { ClientMutation, ClientQuery } from "convex/server";
  */
 export type ConvexAPI = {
   queries: {
+    getBoats: ClientQuery<typeof getBoats>;
     getGoats: ClientQuery<typeof getGoats>;
     getNotes: ClientQuery<typeof getNotes>;
     getQuotes: ClientQuery<typeof getQuotes>;
   };
   mutations: {
+    addBoat: ClientMutation<typeof addBoat>;
     addGoat: ClientMutation<typeof addGoat>;
     addNote: ClientMutation<typeof addNote>;
     addQuote: ClientMutation<typeof addQuote>;
     storeUser: ClientMutation<typeof storeUser>;
+    voteForBoat: ClientMutation<typeof voteForBoat>;
     voteForGoat: ClientMutation<typeof voteForGoat>;
     voteForNote: ClientMutation<typeof voteForNote>;
     voteForQuote: ClientMutation<typeof voteForQuote>;
