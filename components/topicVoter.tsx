@@ -1,15 +1,15 @@
-import {Id} from "../convex/_generated/dataModel";
+import {Id, TableNames} from "../convex/_generated/dataModel";
 import {FormEvent, useState} from "react";
 import styles from "../styles/Home.module.css";
 
-type TopicVoterProps = {
+type TopicVoterProps<TableName extends TableNames> = {
   name: string;
-  topics: {text: string, votes: number, disableVoting: boolean, _id: Id<any> }[];
+  topics: {text: string, votes: number, disableVoting: boolean, _id: Id<TableName> }[];
   addTopicMutation: (topicText: string) => void;
-  handleVote: (_id: Id<any>) => void;
+  handleVote: (_id: Id<TableName>) => void;
 }
 
-const TopicVoter = ({name, topics, addTopicMutation, handleVote}: TopicVoterProps) => {
+const TopicVoter = <TableName extends TableNames,>({name, topics, addTopicMutation, handleVote}: TopicVoterProps<TableName>): JSX.Element => {
   const [newTopicText, setNewTopicText] = useState("");
 
   async function handleAddTopic(event: FormEvent) {
