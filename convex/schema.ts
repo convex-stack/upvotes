@@ -12,7 +12,7 @@ export default defineSchema({
   users: defineTable({
     name: s.string(),
     tokenIdentifier: s.string(),
-    noteVotes: s.set(s.id('notes'))
+    noteVotes: s.set(s.string())
   }),
   notes: defineTable({
     text: s.string(),

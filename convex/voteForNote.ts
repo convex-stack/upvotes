@@ -20,20 +20,14 @@ export default mutation(
         user.noteVotes = new Set()
       }
 
-      // *sigh* looping through the whole set here wipes out the benefit of using a set in the first place
-      // it's necessary since convex Ids don't compare correctly using ===, so set methods like .has don't
-      // work as expected.
-      for (const noteId of user.noteVotes) {
-        if(noteId.equals(noteDoc._id)) {
-          console.log(`Current user ${user._id} has already voted for ${noteDoc.text}`)
-          return;
-        }
+      if(user.noteVotes.has(noteDoc._id.id)) {
+        console.log(`Current user ${user._id} has already voted for ${noteDoc.text}`)
+        return;
       }
-      user.noteVotes.add(noteDoc._id)
+
+      user.noteVotes.add(noteDoc._id.id)
       db.replace(user._id, user)
       console.log(`successfully voted! This user has now voted for ${user.noteVotes.size} notes`)
-
-
     }
   }
 )

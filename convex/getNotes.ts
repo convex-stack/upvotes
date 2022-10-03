@@ -16,8 +16,6 @@ export default query(async ({ db , auth}): Promise<NoteWithVotingInfo[]> => {
     .filter(q => q.eq(q.field("tokenIdentifier"), identity.tokenIdentifier))
     .unique();
 
-  const alreadyVotedIds = new Set([...user.noteVotes ?? []].map((noteId: Id<'notes'>) => noteId.id))
-
   const notesDocs = await db
     .table('notes')
     .collect()
@@ -26,13 +24,12 @@ export default query(async ({ db , auth}): Promise<NoteWithVotingInfo[]> => {
   }
   console.log(`Got ${notesDocs.length} notes`);
 
-
   const notesWithVotingInfoByNoteId: Record<string, NoteWithVotingInfo> = {};
 
   notesDocs.forEach((note) => {
     // type GenericId<'notes'> cannot be used as an index type...
     notesWithVotingInfoByNoteId[note._id.id] = {
-      disableVoting: alreadyVotedIds.has(note._id.id),
+      disableVoting: user.noteVotes.has(note._id.id),
       votes: 0,
       ...note
     }
@@ -43,7 +40,7 @@ export default query(async ({ db , auth}): Promise<NoteWithVotingInfo[]> => {
     .table("users").collect();
   allUsers.forEach(({noteVotes}) => {
     if (noteVotes) {
-      noteVotes.forEach(({id}) => {
+      noteVotes.forEach((id) => {
         notesWithVotingInfoByNoteId[id].votes += 1
       })
     }
