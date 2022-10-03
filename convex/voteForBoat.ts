@@ -1,17 +1,10 @@
 import { mutation } from './_generated/server'
 import {Id} from "./_generated/dataModel";
+import {getUserDoc} from "./helpers";
 
 export default mutation(
   async ({ db, auth }, boatId: Id<'boats'>) => {
-    const identity = await auth.getUserIdentity();
-    if (!identity) {
-      throw new Error("Unauthenticated call to voteForNote");
-    }
-    const user = await db
-      .table("users")
-      .filter(q => q.eq(q.field("tokenIdentifier"), identity.tokenIdentifier))
-      .unique();
-
+    const user = await getUserDoc(db, auth);
     const boatDoc = await db.get(boatId);
     if (boatDoc === null) {
       console.log('How did you vote for a boat that did not exist?.')

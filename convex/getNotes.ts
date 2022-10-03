@@ -1,5 +1,6 @@
 import { query } from './_generated/server'
 import {Document, Id} from "./_generated/dataModel";
+import {getUserDoc} from "./helpers";
 
 type NoteWithVotingInfo = Document<'notes'> & {
   votes: number,
@@ -7,15 +8,7 @@ type NoteWithVotingInfo = Document<'notes'> & {
 }
 
 export default query(async ({ db , auth}): Promise<NoteWithVotingInfo[]> => {
-  const identity = await auth.getUserIdentity();
-  if (!identity) {
-    throw new Error("Unauthenticated call to voteForNote");
-  }
-  const user = await db
-    .table("users")
-    .filter(q => q.eq(q.field("tokenIdentifier"), identity.tokenIdentifier))
-    .unique();
-
+  const user = await getUserDoc(db, auth);
   const notesDocs = await db
     .table('notes')
     .collect()
