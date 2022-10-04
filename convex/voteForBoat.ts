@@ -10,10 +10,12 @@ export default mutation(
       console.log('How did you vote for a boat that did not exist?.')
     } else {
 
-      const existingBoatVote = await db.table('boatVotes')
-        .filter(q => q.and(
-          q.eq(q.field('user'), user._id),
-          q.eq(q.field('boat'), boatDoc._id)))
+      const existingBoatVote = await db.query('boatVotes')
+        .withIndex('by_boat_and_user',q =>
+          q
+            .eq('boat', boatDoc._id)
+            .eq('user', user._id)
+        )
         .first();
       if(existingBoatVote !== null) {
         console.log(`Current user ${user._id} has already voted for ${boatDoc.text}`)

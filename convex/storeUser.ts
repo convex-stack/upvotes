@@ -24,7 +24,7 @@ export default mutation(async ({ db, auth }): Promise<Id<"users">> => {
 
   // Check if we've already stored this identity before.
   const user: Document<"users"> | null = await db
-    .table("users")
+    .query("users")
     .filter(q => q.eq(q.field("tokenIdentifier"), identity.tokenIdentifier))
     .first();
   if (user !== null) {

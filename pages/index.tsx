@@ -30,9 +30,6 @@ const Home: NextPage = () => {
     return () => setUserId(null);
   }, [storeUser]);
 
-
-
-
   return (
     <div className={styles.container}>
       <Head>
@@ -106,6 +103,8 @@ export function Login() {
 
 function Logout() {
   const { logout, user } = useAuth0();
+  const generateData = useMutation("generateData");
+
   return (
     <div>
       {/* We know this component only renders if the user is logged in. */}
@@ -116,6 +115,10 @@ function Logout() {
       >
         Log out
       </button>
+      <button onClick={() => generateData()}>
+        Generate test datarm
+      </button>
+
     </div>
   );
 }

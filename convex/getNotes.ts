@@ -10,7 +10,7 @@ type NoteWithVotingInfo = Document<'notes'> & {
 export default query(async ({ db , auth}): Promise<NoteWithVotingInfo[]> => {
   const user = await getUserDoc(db, auth);
   const notesDocs = await db
-    .table('notes')
+    .query('notes')
     .collect()
   if (notesDocs === null) {
     return []
@@ -30,7 +30,7 @@ export default query(async ({ db , auth}): Promise<NoteWithVotingInfo[]> => {
   // To fill in the votes for each note, we need to look at *all* the users
   // and count up each of their votes
   const allUsers = await db
-    .table("users").collect();
+    .query("users").collect();
   allUsers.forEach(({noteVotes}) => {
     if (noteVotes) {
       noteVotes.forEach((id) => {

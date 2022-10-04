@@ -23,5 +23,6 @@ export default defineSchema({
   boatVotes: defineTable({
     boat: s.id('boats'),
     user: s.id('users')
-  })
+  }).index("by_boat", ["boat"])
+    .index("by_boat_and_user", ["boat", "user"])
 });

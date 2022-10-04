@@ -8,7 +8,7 @@ export async function getUserDoc(db: DatabaseReader, auth: Auth) {
     throw new Error("Unauthenticated call to getUserDoc");
   }
   const user = await db
-    .table("users")
+    .query("users")
     .filter(q => q.eq(q.field("tokenIdentifier"), identity.tokenIdentifier))
     .unique();
   return user;
@@ -16,7 +16,7 @@ export async function getUserDoc(db: DatabaseReader, auth: Auth) {
 
 export async function addTopic(db: DatabaseWriter, tableName: TableNames, topicText: string, defaultFields: any) {
   const quoteDoc = await db
-    .table(tableName)
+    .query(tableName)
     .filter((q) => q.eq(q.field('text'), topicText))
     .first()
   if (quoteDoc === null) {

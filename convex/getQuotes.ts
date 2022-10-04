@@ -3,7 +3,7 @@ import {Document} from "./_generated/dataModel";
 
 export default query(async ({ db }): Promise<Document<'quotes'>[]> => {
   const quotesDocs = await db
-    .table('quotes')
+    .query('quotes')
     .collect()
   if (quotesDocs === null) {
     return []
