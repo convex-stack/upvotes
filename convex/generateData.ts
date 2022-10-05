@@ -3,8 +3,9 @@ import {Id} from "./_generated/dataModel";
 
 export default mutation(
   async ({ db, auth }) => {
-    console.log('generating some test data!')
-    const batchString = 'A'
+    const batchString = 'D'
+    console.log(`generating some test data! batch ${batchString}`)
+
     const count = 100
     const userIds: Id<'users'>[] = [];
     const goatIds: Id<'goats'>[] = [];
