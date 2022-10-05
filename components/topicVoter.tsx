@@ -4,12 +4,13 @@ import styles from "../styles/Home.module.css";
 
 type TopicVoterProps<TableName extends TableNames> = {
   name: string;
+  title?: string;
   topics: {text: string, votes: number, disableVoting: boolean, _id: Id<TableName> }[];
   addTopicMutation: (topicText: string) => void;
   handleVote: (_id: Id<TableName>) => void;
 }
 
-const TopicVoter = <TableName extends TableNames,>({name, topics, addTopicMutation, handleVote}: TopicVoterProps<TableName>): JSX.Element => {
+const TopicVoter = <TableName extends TableNames,>({name, title, topics, addTopicMutation, handleVote}: TopicVoterProps<TableName>): JSX.Element => {
   const [newTopicText, setNewTopicText] = useState("");
 
   async function handleAddTopic(event: FormEvent) {
@@ -20,7 +21,7 @@ const TopicVoter = <TableName extends TableNames,>({name, topics, addTopicMutati
 
   return (<div className={styles.voting_tab}>
     <h1 className={styles.title}>
-      {name} Voter
+      {title ?? name} Voter
     </h1>
     {topics.map(({text, votes, disableVoting, _id}) =>
       <div className={styles.quote} key={_id.id}>

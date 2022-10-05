@@ -17,15 +17,11 @@ export default query(async ({ db , auth}): Promise<BoatWithVotingInfo[]> => {
   }
   console.log(`Got ${boatDocs.length} boats`);
   const boatDocsWithVotingInfo: BoatWithVotingInfo[] = []
-  let totalVotes = 0
   for (const boatDoc of boatDocs) {
     // Go through the boats individually and query convex for their voting info
     // We could alternately just query the entire boatVotes table
     // and process each of the votes in typescript
-    const voteInfo = await getVoteInfoForBoat(db, boatDoc, user)
-    totalVotes += voteInfo.votes
-    console.log(`counted ${voteInfo.votes} votes for ${boatDoc.text}. Total ${totalVotes} votes`)
-    boatDocsWithVotingInfo.push(voteInfo);
+    boatDocsWithVotingInfo.push(await getVoteInfoForBoat(db, boatDoc, user));
   }
   return boatDocsWithVotingInfo.sort((a,b)=> b.votes - a.votes);
 })
@@ -34,13 +30,15 @@ export default query(async ({ db , auth}): Promise<BoatWithVotingInfo[]> => {
 async function getVoteInfoForBoat(db: DatabaseReader, boatDoc: Document<'boats'>, user: Document<'users'>) {
   // has this user voted for the boat?
   const existingBoatVote = await db.query('boatVotes')
-    .filter(q => q.and(
-      q.eq(q.field('user'), user._id),
-      q.eq(q.field('boat'), boatDoc._id)))
+    .withIndex('by_boat_and_user',q =>
+      q
+        .eq('boat', boatDoc._id)
+        .eq('user', user._id)
+    )
     .first();
   // how many users have voted for the boat?
   const votes = (await db.query('boatVotes')
-    .filter(q => q.eq(q.field('boat'), boatDoc._id))
+    .withIndex('by_boat', q => q.eq('boat', boatDoc._id))
     .collect()).length;
 
   return {

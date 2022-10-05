@@ -56,7 +56,7 @@ const Home: NextPage = () => {
             <NoteVoter/>
           </TabPanel>
           <TabPanel>
-            <BoatVoter/>
+            <BoatVotingTabs/>
           </TabPanel>
         </Tabs>
       </main>
@@ -80,6 +80,34 @@ const Home: NextPage = () => {
       </footer>
     </div>
   )
+}
+
+export function BoatVotingTabs() {
+  return <Tabs defaultIndex={1}>
+    <TabList>
+      <Tab>No indices - full table scans</Tab>
+      <Tab>Use indices</Tab>
+      <Tab>Process boatVotes in typescript</Tab>
+    </TabList>
+    <TabPanel>
+      <BoatVoter
+        title={'Naive boat'}
+        getBoats={() => useQuery('getBoats') ?? []}
+      />
+    </TabPanel>
+    <TabPanel>
+      <BoatVoter
+        title={'(With indexed queries) boat'}
+        getBoats={() => useQuery('getBoatsWithIndices') ?? []}
+      />
+    </TabPanel>
+    <TabPanel>
+      <BoatVoter
+        title={'Typescript boat'}
+        getBoats={() => useQuery('getBoatsInTypescript') ?? []}
+      />
+    </TabPanel>
+  </Tabs>
 }
 
 export function Login() {
@@ -116,7 +144,7 @@ function Logout() {
         Log out
       </button>
       <button onClick={() => generateData()}>
-        Generate test datarm
+        Generate test data
       </button>
 
     </div>

@@ -24,6 +24,8 @@ import type * as addNote from "../addNote";
 import type * as addQuote from "../addQuote";
 import type * as generateData from "../generateData";
 import type * as getBoats from "../getBoats";
+import type * as getBoatsInTypescript from "../getBoatsInTypescript";
+import type * as getBoatsWithIndices from "../getBoatsWithIndices";
 import type * as getGoats from "../getGoats";
 import type * as getNotes from "../getNotes";
 import type * as getQuotes from "../getQuotes";
@@ -50,6 +52,8 @@ export type ConvexAPI = ApiFromModules<{
   addQuote: typeof addQuote;
   generateData: typeof generateData;
   getBoats: typeof getBoats;
+  getBoatsInTypescript: typeof getBoatsInTypescript;
+  getBoatsWithIndices: typeof getBoatsWithIndices;
   getGoats: typeof getGoats;
   getNotes: typeof getNotes;
   getQuotes: typeof getQuotes;

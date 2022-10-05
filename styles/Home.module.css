@@ -73,6 +73,7 @@
   margin: 0;
   line-height: 1.15;
   font-size: 3rem;
+  text-transform: capitalize;
 }
 
 .title {

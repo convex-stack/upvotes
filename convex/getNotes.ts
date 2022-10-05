@@ -44,5 +44,5 @@ export default query(async ({ db , auth}): Promise<NoteWithVotingInfo[]> => {
     result.push(notesWithVotingInfoByNoteId[noteId])
   }
 
-  return result;
+  return result.sort((a,b)=> b.votes - a.votes);
 })
