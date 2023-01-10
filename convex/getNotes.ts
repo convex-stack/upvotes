@@ -1,20 +1,15 @@
-import { query } from './_generated/server'
-import {Document, Id} from "./_generated/dataModel";
-import {getUserDoc} from "./helpers";
+import { query } from './_generated/server';
+import { Document, Id } from './_generated/dataModel';
+import { getUserDoc } from './helpers';
 
 type NoteWithVotingInfo = Document<'notes'> & {
-  votes: number,
-  disableVoting: boolean,
-}
+  votes: number;
+  disableVoting: boolean;
+};
 
-export default query(async ({ db , auth}): Promise<NoteWithVotingInfo[]> => {
+export default query(async ({ db, auth }): Promise<NoteWithVotingInfo[]> => {
   const user = await getUserDoc(db, auth);
-  const notesDocs = await db
-    .query('notes')
-    .collect()
-  if (notesDocs === null) {
-    return []
-  }
+  const notesDocs = await db.query('notes').collect();
   console.log(`Got ${notesDocs.length} notes`);
 
   const notesWithVotingInfoByNoteId: Record<string, NoteWithVotingInfo> = {};
@@ -24,25 +19,24 @@ export default query(async ({ db , auth}): Promise<NoteWithVotingInfo[]> => {
     notesWithVotingInfoByNoteId[note._id.id] = {
       disableVoting: user.noteVotes.has(note._id.id),
       votes: 0,
-      ...note
-    }
-  })
+      ...note,
+    };
+  });
   // To fill in the votes for each note, we need to look at *all* the users
   // and count up each of their votes
-  const allUsers = await db
-    .query("users").collect();
-  allUsers.forEach(({noteVotes}) => {
+  const allUsers = await db.query('users').collect();
+  allUsers.forEach(({ noteVotes }) => {
     if (noteVotes) {
       noteVotes.forEach((id) => {
-        notesWithVotingInfoByNoteId[id].votes += 1
-      })
+        notesWithVotingInfoByNoteId[id].votes += 1;
+      });
     }
-  })
+  });
 
-  const result = []
+  const result = [];
   for (let noteId in notesWithVotingInfoByNoteId) {
-    result.push(notesWithVotingInfoByNoteId[noteId])
+    result.push(notesWithVotingInfoByNoteId[noteId]);
   }
 
-  return result.sort((a,b)=> b.votes - a.votes);
-})
+  return result.sort((a, b) => b.votes - a.votes);
+});

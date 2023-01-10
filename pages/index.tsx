@@ -1,32 +1,31 @@
-import type { NextPage } from 'next'
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
-import { useQuery, useMutation } from '../convex/_generated/react'
-import { Id } from "../convex/_generated/dataModel";
+import type { NextPage } from 'next';
+import Head from 'next/head';
+import Image from 'next/image';
+import styles from '../styles/Home.module.css';
+import { useQuery, useMutation } from '../convex/_generated/react';
+import { Id } from '../convex/_generated/dataModel';
 
-import { useEffect, useState, FormEvent } from 'react'
+import { useEffect, useState, FormEvent } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
-import QuoteVoter from "../components/quoteVoter";
-import GoatVoter from "../components/goatVoter";
-import NoteVoter from '../components/noteVoter'
-import BoatVoter from '../components/boatVoter'
+import QuoteVoter from '../components/quoteVoter';
+import GoatVoter from '../components/goatVoter';
+import NoteVoter from '../components/noteVoter';
+import BoatVoter from '../components/boatVoter';
 
 const Home: NextPage = () => {
-
-  const [userId, setUserId] = useState<Id<"users"> | null>(null);
-  const storeUser = useMutation("storeUser");
+  const [userId, setUserId] = useState<Id<'users'> | null>(null);
+  const storeUser = useMutation('storeUser');
   useEffect(() => {
     // Store the user in the database.
     // Recall that `storeUser` gets the user information via the `auth`
     // object on the server. You don't need to pass anything manually here.
-    async function createUser() {
+    async function getOrCreateUser() {
       const id = await storeUser();
       setUserId(id);
     }
-    createUser();
+    getOrCreateUser();
     return () => setUserId(null);
   }, [storeUser]);
 
@@ -47,16 +46,14 @@ const Home: NextPage = () => {
             <Tab>Boats</Tab>
           </TabList>
           <TabPanel>
-            <QuoteVoter/>
+            <QuoteVoter />
+          </TabPanel>
+          <TabPanel>{userId && <GoatVoter userId={userId} />}</TabPanel>
+          <TabPanel>
+            <NoteVoter />
           </TabPanel>
           <TabPanel>
-            {userId && <GoatVoter userId={userId}/>}
-          </TabPanel>
-          <TabPanel>
-            <NoteVoter/>
-          </TabPanel>
-          <TabPanel>
-            <BoatVotingTabs/>
+            <BoatVotingTabs />
           </TabPanel>
         </Tabs>
       </main>
@@ -79,35 +76,37 @@ const Home: NextPage = () => {
         </div>
       </footer>
     </div>
-  )
-}
+  );
+};
 
 export function BoatVotingTabs() {
-  return <Tabs defaultIndex={1}>
-    <TabList>
-      <Tab>No indices - full table scans</Tab>
-      <Tab>Use indices</Tab>
-      <Tab>Process boatVotes in typescript</Tab>
-    </TabList>
-    <TabPanel>
-      <BoatVoter
-        title={'Naive boat'}
-        getBoats={() => useQuery('getBoats') ?? []}
-      />
-    </TabPanel>
-    <TabPanel>
-      <BoatVoter
-        title={'(With indexed queries) boat'}
-        getBoats={() => useQuery('getBoatsWithIndices') ?? []}
-      />
-    </TabPanel>
-    <TabPanel>
-      <BoatVoter
-        title={'Typescript boat'}
-        getBoats={() => useQuery('getBoatsInTypescript') ?? []}
-      />
-    </TabPanel>
-  </Tabs>
+  return (
+    <Tabs defaultIndex={1}>
+      <TabList>
+        <Tab>No indices - full table scans</Tab>
+        <Tab>Use indices</Tab>
+        <Tab>Process boatVotes in typescript</Tab>
+      </TabList>
+      <TabPanel>
+        <BoatVoter
+          title={'Naive boat'}
+          getBoats={() => useQuery('getBoats') ?? []}
+        />
+      </TabPanel>
+      <TabPanel>
+        <BoatVoter
+          title={'(With indexed queries) boat'}
+          getBoats={() => useQuery('getBoatsWithIndices') ?? []}
+        />
+      </TabPanel>
+      <TabPanel>
+        <BoatVoter
+          title={'Typescript boat'}
+          getBoats={() => useQuery('getBoatsInTypescript') ?? []}
+        />
+      </TabPanel>
+    </Tabs>
+  );
 }
 
 export function Login() {
@@ -131,24 +130,21 @@ export function Login() {
 
 function Logout() {
   const { logout, user } = useAuth0();
-  const generateData = useMutation("generateData");
+  const generateData = useMutation('generateData');
 
   return (
     <div>
       {/* We know this component only renders if the user is logged in. */}
-      <p>Logged in{user!.name ? ` as ${user!.name}` : ""}</p>
+      <p>Logged in{user!.name ? ` as ${user!.name}` : ''}</p>
       <button
         className="btn btn-primary"
         onClick={() => logout({ returnTo: window.location.origin })}
       >
         Log out
       </button>
-      <button onClick={() => generateData()}>
-        Generate test data
-      </button>
-
+      <button onClick={() => generateData()}>Generate test data</button>
     </div>
   );
 }
 
-export default Home
+export default Home;
