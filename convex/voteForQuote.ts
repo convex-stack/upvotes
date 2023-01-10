@@ -7,9 +7,8 @@ export default mutation(
     if (quoteDoc === null) {
       throw 'How did you vote for a quote that did not exist?.';
     } else {
-      quoteDoc.votes += increment;
-      db.replace(quoteDoc._id, quoteDoc);
-      console.log(`This quote now has ${quoteDoc.votes} votes.`);
+      await db.patch(quoteDoc._id, { votes: quoteDoc.votes + increment });
+      console.log(`This quote now has ${increment} more votes.`);
     }
   }
 );
