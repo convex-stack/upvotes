@@ -1,11 +1,11 @@
 {
-  "project": "upvotes",
-  "team": "k8reindeer",
-  "prodUrl": "https://calm-herring-24.convex.cloud",
+  "project": "upvotes-f5a7d",
+  "team": "convex",
+  "prodUrl": "https://hushed-bear-835.convex.cloud",
   "functions": "convex/",
   "authInfo": [
     {
-      "domain": "https://dev-65snni10.us.auth0.com",
+      "domain": "https://dev-65snni10.us.auth0.com/",
       "applicationID": "R9wkycRIRme7qZlw82fJXw1ZMvhNv6Yg"
     }
   ]
